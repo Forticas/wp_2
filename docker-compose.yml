@@ -1,0 +1,64 @@
+version: "3.9"
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=redddis
+    volumes:
+      - db-redis:/data
+    restart: always
+    command: redis-server --save 20 1 --loglevel warning --requirepass redddis
+
+  wordpress:
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    stdin_open: true
+    tty: true
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: 'houssem'
+      WORDPRESS_DB_PASSWORD: 'Hafidha_18'
+      WORDPRESS_DB_NAME: 'trademarketnews'
+    volumes:
+      - wordpress_data:/var/www/html
+      - ./wordpress/wp-content/plugins:/var/www/html/wp-content/plugins
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'trademarketnews'
+      MYSQL_USER: 'houssem'
+      MYSQL_PASSWORD: 'Hafidha_18'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'root_pass'
+    volumes:
+      - db_data:/var/lib/mysql
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/conf:/etc/nginx/conf.d
+      - ./certbot/conf:/etc/nginx/ssl
+      - ./certbot/data:/var/www/html
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d trademarketnews.com -d www.trademarketnews.com
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/logs:/var/log/letsencrypt
+      - ./certbot/data:/var/www/html
+volumes:
+  db_data:
+  wordpress_data:
+  db-redis:
