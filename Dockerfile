@@ -31,4 +31,4 @@ RUN docker-php-ext-enable \
 COPY php/custom.ini $PHP_INI_DIR/conf.d/
 
 
-CMD cron && tail -f /var/log/cron.log
+#CMD cron && tail -f /var/log/cron.log
