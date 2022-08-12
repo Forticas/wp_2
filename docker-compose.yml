@@ -8,7 +8,7 @@ services:
     environment:
       - REDIS_PASSWORD=redddis
     volumes:
-      - db-redis:/data
+      - db_redis:/data
     restart: always
     command: redis-server --save 20 1 --loglevel warning --requirepass redddis
 
@@ -61,4 +61,4 @@ services:
 volumes:
   db_data:
   wordpress_data:
-  db-redis:
+  db_redis:
