@@ -33,5 +33,5 @@ COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php/custom.ini $PHP_INI_DIR/conf.d/
 
 
-#CMD cron && tail -f /var/log/cron.log
+
 CMD ["/usr/bin/supervisord"]
