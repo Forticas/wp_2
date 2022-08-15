@@ -28,6 +28,9 @@ services:
       WORDPRESS_DB_USER: 'houssem'
       WORDPRESS_DB_PASSWORD: 'Hafidha_18'
       WORDPRESS_DB_NAME: 'trademarketnews'
+      WORDPRESS_TABLE_PREFIX: ht_365m_
+      WORDPRESS_CONFIG_EXTRA: |
+        define('DISABLE_WP_CRON', true );
     volumes:
       - wordpress_data:/var/www/html
       - ./wordpress/wp-content/plugins:/var/www/html/wp-content/plugins
