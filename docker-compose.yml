@@ -20,6 +20,9 @@ services:
     restart: always
     stdin_open: true
     tty: true
+    depends_on:
+      - redis
+      - mariadb
     environment:
       WORDPRESS_DB_HOST: mariadb
       WORDPRESS_DB_USER: 'houssem'
