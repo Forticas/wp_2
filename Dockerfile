@@ -20,16 +20,14 @@ RUN mkdir -p /var/log/supervisor
 
 RUN pecl install \
     apcu \
-    redis \
-    imagick;
+    redis ;
 
 RUN rm -rf /tmp/pear;
 
 
 RUN docker-php-ext-enable \
     apcu \
-    redis \
-    imagick; \
+    redis ;
 
 COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php/custom.ini $PHP_INI_DIR/conf.d/
