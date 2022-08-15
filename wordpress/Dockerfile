@@ -1,7 +1,7 @@
 FROM wordpress:php8.1-apache
 
 # Add crontab file in the cron directory
-ADD ../cron/crontab /etc/cron.d/wp-cron
+ADD cron/crontab /etc/cron.d/wp-cron
 
 # Give execution rights on the cron job
 RUN chmod 0644 /etc/cron.d/wp-cron
@@ -29,8 +29,8 @@ RUN docker-php-ext-enable \
     apcu \
     redis ;
 
-COPY ../supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY ../php/custom.ini $PHP_INI_DIR/conf.d/
+COPY supervisor/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY php/custom.ini $PHP_INI_DIR/conf.d/
 
 
 
