@@ -16,7 +16,7 @@ services:
     container_name: wordpress
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: wordpress/Dockerfile
     restart: always
     stdin_open: true
     tty: true
@@ -48,23 +48,33 @@ services:
   nginx:
     container_name: nginx
     image: nginx:latest
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+      args:
+        - CERTBOT_EMAIL=houssem@forticas.com
+        - DOMAIN_LIST=lestuteurs.fr,www.lestuteurs.fr
     restart: unless-stopped
+    depends_on:
+      - wordpress
     ports:
       - 80:80
       - 443:443
     volumes:
       - ./nginx/conf:/etc/nginx/conf.d
-      - ./certbot/conf:/etc/nginx/ssl
-      - ./certbot/data:/var/www/html
-  certbot:
-    container_name: certbot
-    image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d trademarketnews.com -d www.trademarketnews.com
-    volumes:
-      - ./certbot/conf:/etc/letsencrypt
-      - ./certbot/logs:/var/log/letsencrypt
-      - ./certbot/data:/var/www/html
+      - letsencrypt:/etc/letsencrypt
+      #- ./certbot/conf:/etc/nginx/ssl
+      #- ./certbot/data:/var/www/html
+  #certbot:
+    #container_name: certbot
+    #image: certbot/certbot:latest
+    #command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d lestuteurs.fr -d www.lestuteurs.fr
+    #volumes:
+    #  - ./certbot/conf:/etc/letsencrypt
+    #  - ./certbot/logs:/var/log/letsencrypt
+    #  - ./certbot/data:/var/www/html
 volumes:
   db_data:
   wordpress_data:
   db_redis:
+  letsencrypt:
