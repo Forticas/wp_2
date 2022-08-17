@@ -4,8 +4,8 @@ ARG CERTBOT_EMAIL=info@domain.com
 ARG DOMAIN_LIST
 
 RUN  apt-get update && apt-get upgrade -y \
-      && apt-get install -y cron certbot python3-certbot-nginx bash wget \
-      && certbot  certonly --email "${CERTBOT_EMAIL}" --agree-tos --no-eff-email -n -d ${DOMAIN_LIST} \
+      && apt-get install -y cron certbot python3-certbot-nginx bash wget\
+      && certbot  certonly --standalone -d ${DOMAIN_LIST} \
       && rm -rf /var/lib/apt/lists/* \
       && echo "PATH=$PATH" > /etc/cron.d/certbot-renew  \
       && echo "@monthly certbot renew --nginx >> /var/log/cron.log 2>&1" >>/etc/cron.d/certbot-renew \
