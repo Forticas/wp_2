@@ -20,8 +20,6 @@ services:
     restart: always
     stdin_open: true
     tty: true
-    ports:
-      - "8099:80"
     depends_on:
       - redis
       - mariadb
@@ -49,32 +47,16 @@ services:
       - db_data:/var/lib/mysql
   nginx:
     container_name: nginx
-    image: nginx:latest
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
-      args:
-        - CERTBOT_EMAIL=houssem@forticas.com
-        - DOMAIN_LIST=trademarketnews.com,www.trademarketnews.com
-    restart: unless-stopped
-    depends_on:
-      - wordpress
+    image: jwilder/nginx-proxy
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
+    environment:
+      VIRTUAL_HOST: "trademarketnews.com"
+      VIRTUAL_PROTO: https
     volumes:
-      - ./nginx/conf:/etc/nginx/conf.d
-      - letsencrypt:/etc/letsencrypt
-      #- ./certbot/conf:/etc/nginx/ssl
-      #- ./certbot/data:/var/www/html
-  #certbot:
-    #container_name: certbot
-    #image: certbot/certbot:latest
-    #command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d trademarketnews.com -d www.trademarketnews.com
-    #volumes:
-    #  - ./certbot/conf:/etc/letsencrypt
-    #  - ./certbot/logs:/var/log/letsencrypt
-    #  - ./certbot/data:/var/www/html
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
 volumes:
   db_data:
   wordpress_data:
