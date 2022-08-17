@@ -47,7 +47,7 @@ services:
       - db_data:/var/lib/mysql
   nginx:
     container_name: nginx
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:alpine
     ports:
       - "80:80"
       - "443:443"
