@@ -20,6 +20,8 @@ services:
     restart: always
     stdin_open: true
     tty: true
+    ports:
+      - "8099:80"
     depends_on:
       - redis
       - mariadb
