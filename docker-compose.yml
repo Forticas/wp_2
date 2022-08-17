@@ -55,7 +55,7 @@ services:
       dockerfile: nginx/Dockerfile
       args:
         - CERTBOT_EMAIL=houssem@forticas.com
-        - DOMAIN_LIST=lestuteurs.fr,www.lestuteurs.fr
+        - DOMAIN_LIST=trademarketnews.com,www.trademarketnews.com
     restart: unless-stopped
     depends_on:
       - wordpress
@@ -70,7 +70,7 @@ services:
   #certbot:
     #container_name: certbot
     #image: certbot/certbot:latest
-    #command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d lestuteurs.fr -d www.lestuteurs.fr
+    #command: certonly --webroot --webroot-path=/var/www/html --email houss.tayech@gmail.com --agree-tos --no-eff-email -d trademarketnews.com -d www.trademarketnews.com
     #volumes:
     #  - ./certbot/conf:/etc/letsencrypt
     #  - ./certbot/logs:/var/log/letsencrypt
